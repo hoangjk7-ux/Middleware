@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  crm-service:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/crm-db
+      - JWT_SECRET=your_jwt_secret_here
+    depends_on:
+      - mongo
+    networks:
+      - crm-network
+
+  mongo:
+    image: mongo:7
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - crm-network
+
+volumes:
+  mongo-data:
+
+networks:
+  crm-network:
+    driver: bridge
